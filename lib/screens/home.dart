@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nhongshoppee/screens/search.dart';
 import 'package:nhongshoppee/utility/my_style.dart';
 import 'package:nhongshoppee/widget/about_user.dart';
 import 'package:nhongshoppee/widget/basket.dart';
@@ -20,17 +21,18 @@ class _HomeState extends State<Home> {
 
   // Method
   Widget myBottomNavigator() {
-    return BottomNavigationBar(onTap: (int i){
-      setState(() {
-        index = i;
-      });
-    },
-      currentIndex: index,
-      items: <BottomNavigationBarItem>[
-      mainHomeNav(),
-      basketNav(),
-      aboutUserNav(),
-    ]);
+    return BottomNavigationBar(
+        onTap: (int i) {
+          setState(() {
+            index = i;
+          });
+        },
+        currentIndex: index,
+        items: <BottomNavigationBarItem>[
+          mainHomeNav(),
+          basketNav(),
+          aboutUserNav(),
+        ]);
   }
 
   BottomNavigationBarItem mainHomeNav() {
@@ -57,7 +59,14 @@ class _HomeState extends State<Home> {
   Widget searchButton() {
     return IconButton(
       icon: Icon(Icons.search),
-      onPressed: () {},
+      onPressed: () {
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext buildContext) {
+          return Search(index: 0,);
+          // return Search(index: 0,name: 'name',);
+        });
+        Navigator.of(context).push(materialPageRoute);
+      },
     );
   }
 
