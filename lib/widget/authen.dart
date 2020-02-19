@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nhongshoppee/models/user_model.dart';
+import 'package:nhongshoppee/utility/normal_dialog.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -75,7 +76,8 @@ class _AuthenState extends State<Authen> {
         child: Text('Login'),
         onPressed: () {
           if (user.isEmpty || password.isEmpty) {
-            print('Have Space');
+            // print('Have Space');
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
           } else {
             checkAuthen();
           }

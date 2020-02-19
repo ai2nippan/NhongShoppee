@@ -66,7 +66,7 @@ class _AboutUserState extends State<AboutUser> {
       });
     } else {
       // print('Cannot Register');
-      normalDialog(context, 'Register False', 'Please Try Agains')
+      normalDialog(context, 'Register False', 'Please Try Agains');
     }
   }
 
