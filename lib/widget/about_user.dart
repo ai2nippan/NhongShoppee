@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:nhongshoppee/utility/normal_dialog.dart';
 // import 'package:nhongshoppee/models/user_model.dart';
 import 'package:nhongshoppee/widget/authen.dart';
 
@@ -37,7 +38,8 @@ class _AboutUserState extends State<AboutUser> {
               user.isEmpty ||
               password == null ||
               password.isEmpty) {
-            print('Have Space');
+            // print('Have Space');
+              normalDialog(context, 'Have Space', 'Please Fill Every Blank');
           } else {
             registerThread();
           }
@@ -52,12 +54,19 @@ class _AboutUserState extends State<AboutUser> {
 
     Response response = await Dio().get(url);
     if (response.toString() == 'true') {
-      print('Register Success');
+      
+      // print('Register Success');
       // setState(() {
       //   status = false;
       // });
+      normalDialog(context, 'Congratulation', 'Welcome $name Please Login');
+      setState(() {
+        currentWidget = Authen();
+        statusFlat = !statusFlat;
+      });
     } else {
-      print('Cannot Register');
+      // print('Cannot Register');
+      normalDialog(context, 'Register False', 'Please Try Agains')
     }
   }
 
