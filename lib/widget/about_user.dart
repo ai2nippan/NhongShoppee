@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nhongshoppee/utility/normal_dialog.dart';
 // import 'package:nhongshoppee/models/user_model.dart';
 import 'package:nhongshoppee/widget/authen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AboutUser extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _AboutUserState extends State<AboutUser> {
   // bool status = true;
   bool statusFlat = true, statusCheck = true;
   Widget currentWidget;
+  String nameLogin;
 
   // Method
 
@@ -24,6 +26,20 @@ class _AboutUserState extends State<AboutUser> {
   void initState() {
     super.initState();
     currentWidget = Authen();
+    checkRemember();
+  }
+
+  Future<void> checkRemember() async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      bool remember = sharedPreferences.getBool('Remember');
+      if (remember) {
+        setState(() {
+          nameLogin = sharedPreferences.getString('Name');
+        });
+      }
+    } catch (e) {}
   }
 
   Widget registerButton() {
@@ -39,7 +55,7 @@ class _AboutUserState extends State<AboutUser> {
               password == null ||
               password.isEmpty) {
             // print('Have Space');
-              normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
           } else {
             registerThread();
           }
@@ -54,7 +70,6 @@ class _AboutUserState extends State<AboutUser> {
 
     Response response = await Dio().get(url);
     if (response.toString() == 'true') {
-      
       // print('Register Success');
       // setState(() {
       //   status = false;
@@ -153,8 +168,7 @@ class _AboutUserState extends State<AboutUser> {
   }
 
   Widget flatButton() {
-
-    List<String> label = ['New Register','Back to Login'];
+    List<String> label = ['New Register', 'Back to Login'];
 
     return FlatButton(
       onPressed: () {
@@ -179,17 +193,57 @@ class _AboutUserState extends State<AboutUser> {
     );
   }
 
+  Widget showInfo() {
+    var flatButton = FlatButton(
+      onPressed: () {},
+      child: Text('Sign Out'),
+    );
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Welcome $nameLogin'),
+          FlatButton(
+            onPressed: () {
+              clearPreference();
+            },
+            child: Text(
+              'Sign Out',
+              style: TextStyle(color: Colors.pink),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> clearPreference()async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+
+    setState(() {
+      nameLogin = null;
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     // return registerForm();
     // return status ? registerForm() : showContent();
     return Center(
-      child: Column(mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          showContent(),
-          flatButton(),
-        ],
-      ),
+      child: nameLogin == null ? nonLogin() : showInfo(),
+    );
+  }
+
+  Column nonLogin() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        showContent(),
+        flatButton(),
+      ],
     );
   }
 }
