@@ -80,6 +80,23 @@ class _BasketState extends State<Basket> {
     );
   }
 
+  Widget showTitleHead(String string, int size) {
+    return Container(
+      child: Text(string),
+    );
+  }
+
+  Widget showHead() {
+    List<String> head = ['Name Order', 'Price', 'Volumn'];
+    return Row(
+      children: <Widget>[
+        showTitleHead(head[0], 1),
+        showTitleHead(head[1], 1),
+        showTitleHead(head[2], 1),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return orderModels.length == 0 ? showProgress() : showListView();
